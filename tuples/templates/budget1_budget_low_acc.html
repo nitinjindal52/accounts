@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href="{{STATIC_URL}}css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.js"></script>
+<script>
+		var x = {{win_close}}
+		if (x==1)
+		{
+		 window.opener.location.href = window.opener.location.href;
+
+  if (window.opener.progressWindow)
+		
+ {
+    window.opener.progressWindow.close()
+  }
+  window.close();
+		window.close();
+		}
+	</script>
+<body>
+<div id="wrapper">
+	<div id="header-wrapper">
+    	<div class="browser-center">
+        	<div id="logo"><a href="#"><img src="{{STATIC_URL}}images/logo.jpg" alt="logo" /></a></div>
+            <div id="header-right">
+            	<div id="welcome-user">
+                	<h1><span>Welcome</span> Sumeet Mahapatra</h1>
+                    <p>Last Login: 22-01-2013</p>
+                </div>
+                <div id="logout"><a href="#" class="button">logout</a></div>
+            </div>
+        </div>
+    </div>
+    <div id="main-content-wrapper">
+    	<div class="browser-center">
+        	<div id="center-content-wrapper">
+            	<div id="page-title">
+                	<h1>Budget</h1>
+                    <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...	</p>
+                </div>
+                <div class="grid-view-area">
+			            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-b">
+			              <tr>
+			                <th width="4%">&nbsp;</th>
+			                <th width="10%">Account</th>
+			                <th width="7%">Jan{{year}}</th>
+			                <th width="7%">Feb{{year}}</th>
+			                <th width="7%">Mar{{year}}</th>
+			                <th width="7%">Apr{{year}}</th>
+			                <th width="7%">May{{year}}</th>
+			                <th width="7%">Jun{{year}}</th>
+			                <th width="7%">Jul{{year}}</th>
+			                <th width="7%">Aug{{year}}</th>
+			                <th width="7%">Sep{{year}}</th>
+			                <th width="7%">Oct{{year}}</th>
+			                <th width="7%">Nov{{year}}</th>
+			                <th width="7%">Dec{{year}}</th>
+			                <th width="2%">&nbsp;</th>
+			              </tr>
+			            </table>
+			        </div>
+			        <form method="post" action="." >{% csrf_token %}
+			        <div class="toggle_container">
+			        
+				          <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+					         {% for sub_acc in sub_acc %}
+					         <tr>
+			                  			<td width="14%">{{sub_acc.sub_account_number}}-{{sub_acc.sub_account_name}}</td>
+			                  			{% for x in range %}
+			                  			<td width="7%">
+			                  			{% for bud in budget %}
+			                  					{% if bud.sub_account == sub_acc %}
+					                        	{% if bud.accounting_period.month == x %}
+						                        	{% if bud.accounting_period.year > current_year %}
+					                        			 <input type="text" name="{{bud.id}}" value="{{bud.amount}}" class="cell" />
+					                        			 	{% elif bud.accounting_period.year < current_year %}
+					                        			 	{{bud.amount}}
+							                        			{% elif bud.accounting_period.year == current_year %}
+							                        				{% if bud.accounting_period.month > current_month %}
+									                       			 	<input type="text" name="{{bud.id}}" value="{{bud.amount}}" class="cell" />
+									                        			 {% else %}
+									                        			 {{bud.amount}}
+						                        					{% endif %}
+						                        			{% endif %}
+				                                 {% endif %}
+					                        	{% endif %}
+					                    {% endfor %}
+				                        </td>
+				                        {% endfor %}
+			                  			<td width="2%"></td>
+			                  			
+			                  			
+			                 </tr>
+			                 {% endfor %}
+			              </table>
+			             
+			         </div>	
+			         <div style="float:left;">
+                          <input type="submit" name="save" class="button" value="Save" />
+                        </div>
+                        </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+  

@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href="{{STATIC_URL}}css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".toggle_container").hide();
+	$("h2.expand_heading").toggle(function(){
+		$(this).addClass("active"); 
+		}, function () {
+		$(this).removeClass("active");
+	});
+	$("h2.expand_heading").click(function(){
+		$(this).next(".toggle_container").slideToggle("slow");
+	});
+	$(".expand_all").toggle(function(){
+		$(this).addClass("expanded"); 
+		}, function () {
+		$(this).removeClass("expanded");
+	});
+	$(".expand_all").click(function(){
+		$(".toggle_container").slideToggle("slow");
+	});
+});
+</script>
+    <SCRIPT language=Javascript>
+       
+       function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : event.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+       }
+       
+    </SCRIPT>
+    <script LANGUAGE="JavaScript">
+				function checkparrentaccount() {
+							 
+							var level = document.getElementById('account-level').value;
+								
+							var pac = document.getElementById('parent-account-number').value;
+							{%for parent_accounts in account %};
+							var parentaccount = {{parent_accounts.account_number}};
+								if (pac==parentaccount)
+								{
+									
+									return true;								
+								}
+							{% endfor %};
+							
+							$("#parent-account-number").val("");
+							
+							alert("Account not matched")
+							return false;
+							
+							if (document.forms.account.accountnumber.value.length < 4) {
+							alert('account number should be 4 characters long');
+								return false;
+								}
+							}
+		</script>
+</head>
+
+<body>
+<div id="wrapper">
+	<div id="header-wrapper">
+    	<div class="browser-center">
+        	<div id="logo"><a href="#"><img src="{{STATIC_URL}}images/logo.jpg" alt="logo" /></a></div>
+            <div id="header-right">
+            	<div id="welcome-user">
+                	<h1><span>Welcome</span> Sumeet Mahapatra</h1>
+                    <p>Last Login: 22-01-2013</p>
+                </div>
+                <div id="logout"><a href="#" class="button">logout</a></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="main-content-wrapper">
+    	<div class="browser-center">
+        	<div id="center-content-wrapper">
+            	<div id="page-title">
+                	<h1>Budget</h1>
+                    <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...	</p>
+                </div>
+             <form method="post" name="account" action="." onsubmit="return checkparrentaccount()" >{%csrf_token%}  
+                <div id="form-wrapper">
+                	<div class="form-area">
+                    	<div class="form-label">Account Number</div>
+                           <div class="form-field">
+                          <input list="parent_account" value="{{selected_account.account_number}}" onkeypress="return isNumberKey(event)" name="account_number" id="parent-account-number" class="text-box" maxlength="5">
+                          	<datalist id="parent_account">
+                          	<option></option>
+                          	{%for parent_accounts in account %}
+                          	<option value="{{ parent_accounts.account_number }}">{{ parent_accounts.account_number }}({{parent_accounts.account_level}})</option>
+                          	{% endfor %}
+                          	</datalist>
+                          
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Period</div>
+                           <div class="form-field">
+                          <input list="account_period" onkeypress="return isNumberKey(event)" name="account_period" class="text-box" maxlength="4">
+                          	<datalist id="account_period">
+                          	<option></option>
+                          	<option value="2010">2010</option>
+                          	<option value="2011">2011</option>
+                          	<option value="2012">2012</option>
+                          	<option value="2013">2013</option>
+                          	</datalist>
+                          
+                        </div>
+                    </div>
+ 
+                    
+                     <div class="form-area">
+                    	<div class="form-label"></div>
+                        <div class="form-field">
+                          <input type="submit" name="go" class="button" value="Go" />
+                        </div>
+                    </div>
+                    
+                   <div class="grid-view-area">
+			            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+			              <tr>
+			                <th width="4%">&nbsp;</th>
+			                <th width="10%">Account</th>
+			                <th width="7%">Jan{{year}}</th>
+			                <th width="7%">Feb{{year}}</th>
+			                <th width="7%">Mar{{year}}</th>
+			                <th width="7%">Apr{{year}}</th>
+			                <th width="7%">May{{year}}</th>
+			                <th width="7%">Jun{{year}}</th>
+			                <th width="7%">Jul{{year}}</th>
+			                <th width="7%">Aug{{year}}</th>
+			                <th width="7%">Sep{{year}}</th>
+			                <th width="7%">Oct{{year}}</th>
+			                <th width="7%">Nov{{year}}</th>
+			                <th width="7%">Dec{{year}}</th>
+			                <th width="2%">&nbsp;</th>
+			              </tr>
+			            </table>
+			        </div>
+			        <div class="expand_wrapper">
+          	            <h2 class="expand_heading"><a href="#">
+				              <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+				                	  <tr>
+				                        <td width="4%"></td>
+				                        <td width="10%">{{selected_account.account_number}}</td>
+				                        {% for amount in b_a %}
+				                        	{% if amount.account == selected_account %}
+				                        		{% if amount.month == 1 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 2 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 3 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 4 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 5 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 6 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 7 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 8 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 9 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 10 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 11 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+				                               	{% if amount.month == 12 %}
+				                               	<td width="7%">{{amount.amount}}</td>
+				                               	{% endif %}
+						                	{% endif %}
+				                	    {% endfor %}
+				                	    <td width="2%">&nbsp;</td>
+				                	   </tr>
+				              	 </table>
+				              </a></h2>
+				              
+				              <div class="toggle_container">
+				              {% for med_acc in medium_accounts %}
+				           		<h2 class="expand_heading"><a href="#">
+					              <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+					                <tr>
+			                  			<td width="4%"></td>
+			                  			<td width="10%">{{med_acc.account_number}}</td>
+			                  			{% for amount in b_a %}
+				                        	{% if amount.account == med_acc %}
+				                        		{% if amount.month == 1 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 2 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 3 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 4 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 5 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 6 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 7 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 8 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 9 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 10 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 11 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+				                               	{% if amount.month == 12 %}
+				                               	<td width="7%"><input type="text" value="{{amount.amount}}" name="{{account.id}}" readonly="true" id="{{account.id}}" style="width:100%; background:none; border:none;margin:0;padding:0;"/></td>
+				                               	{% endif %}
+						                	{% endif %}
+				                	    {% endfor %}
+				                        
+				                	    <td width="2%"></td>
+			                
+			                 		</tr>
+			                 		
+			                 		
+			             		</table>
+				            </a></h2>
+				              <div class="toggle_container">
+				              {% for low_acc in low_accounts %}
+				              {% if low_acc.parent_account == med_acc.account_number%}
+				           		  <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+					                
+					                <tr>
+			                  			<td width="4%"></td>
+				                        <td width="10%">{{low_acc.account_number}}</td>
+				                        {% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 1 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        		{% if amount.account == low_acc %}
+				                        		{% if amount.month == 2	 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 3 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 4 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 5 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 6 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 7 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 8%}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 9 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 10 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 11 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		{% for amount in b_a %}
+				                        	{% if amount.account == low_acc %}
+				                        		{% if amount.month == 12 %}
+				                        		<td width="7%"><input type="text" class="cell" value="{{amount.amount}}" name="{{amount.id}}"/></td>
+				                        		
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                        		
+				                               	{% endif %}
+				                               	
+						                	{% endif %}
+				                	    {% endfor %}
+				                	    <td width="2%"></td>
+			                
+			                 		</tr>
+			             		</table>
+				            {% endif %}
+				            {% endfor %}
+				            </div>
+			                
+				            
+				            {% endfor %}
+				            </div>
+			             
+			  		</div>
+			  		
+              	
+              	
+              	
+              	 </div>
+              	 <div style="float:left;">
+                          <input type="submit" name="save" class="button" value="Save" />
+                        </div>
+              	 
+               </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="footer">© Copyright 2013 deducive.com. All Rights Reserved</div>
+</div>
+</body>
+</html>

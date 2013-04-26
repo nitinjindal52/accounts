@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Manage Account</title>
+<link href="{{STATIC_URL}}css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".toggle_container").hide();
+	$("h2.expand_heading").toggle(function(){
+		$(this).addClass("active"); 
+		}, function () {
+		$(this).removeClass("active");
+	});
+	$("h2.expand_heading").click(function(){
+		$(this).next(".toggle_container").slideToggle("slow");
+	});
+	$(".expand_all").toggle(function(){
+		$(this).addClass("expanded"); 
+		}, function () {
+		$(this).removeClass("expanded");
+	});
+	$(".expand_all").click(function(){
+		$(".toggle_container").slideToggle("slow");
+	});
+});
+</script>
+</head>
+
+<body>
+<div id="wrapper">
+  <div id="header-wrapper">
+    <div class="browser-center">
+      <div id="logo"><a href="#"><img src="{{STATIC_URL}}images/logo.jpg" alt="logo" /></a></div>
+      <div id="header-right">
+        <div id="welcome-user">
+          <h1><span>Welcome</span> Sumeet Mahapatra</h1>
+          <p>Last Login: 22-01-2013</p>
+        </div>
+        <div id="logout"><a href="#" class="button">logout</a></div>
+      </div>
+    </div>
+  </div>
+  <div id="main-content-wrapper">
+    <div class="browser-center">
+      <div id="center-content-wrapper">
+        <div id="page-title">
+          <h1>Manage Account</h1>
+          <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit... </p>
+        </div>
+        <div class="content">
+        	
+          <div class="grid-view-area">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+              <tr>
+                <th width="3%">&nbsp;</th>
+                <th width="14%">Account Number </th>
+                <th width="14%">Account Name</th>
+                <th width="19%">Account Description </th>
+                <th width="14%">Account Status</th>
+                <th width="18%">Account Start Date</th>
+                <th width="13%">Account Level</th>
+                <th width="5%">&nbsp;</th>
+              </tr>
+            </table>
+          </div>
+          {% for accounts in account_list_high %}
+          <div class="expand_wrapper">
+          
+            <h2 class="expand_heading"><a href="#">
+            
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+                	  <tr>
+                        <td width="3%"></td>
+                	    <td width="14%">{{accounts.account_number}}</td>
+                	    <td width="14%">{{accounts.account_name}} </td>
+                	    <td width="19%"> {{accounts.account_desc}}</td>
+                	    <td width="14%">{{accounts.status}}</td>
+                	    <td width="18%">{{accounts.account_start_date}}</td>
+                	    <td width="13%">{{accounts.account_level}}</td>
+                	    <td></td>
+                	    
+              		   </tr>
+              	 </table>
+              </a></h2>
+              
+              
+              	
+			        <div class="toggle_container">
+			        {% for accounts_m in account_list_medium %}
+			        	
+			           <h2 class="expand_heading"><a href="#">
+			              <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+			                
+			                <tr>
+			                {% if accounts_m.parent_account == accounts.account_number %}
+			                  <td width="4%"></td>
+			                	    <td width="13%">{{accounts_m.account_number}}</td>
+			                	    <td width="14%">{{accounts_m.account_name}} </td>
+			                	    <td width="19%"> {{accounts_m.account_desc}}</td>
+			                	    <td width="14%">{{accounts_m.status}}</td>
+			                	    <td width="18%">{{accounts_m.account_start_date}}</td>
+			                	    <td width="13%">{{accounts_m.account_level}}</td>
+			                	    <td></td>
+			                	    {% endif %}
+			                 </tr>
+			             	
+			               </table>
+			             </a></h2>
+			             <div class="toggle_container">
+			        {% for accounts_l in account_list_low %}
+			        	
+			           
+			              <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+			                
+			                <tr>
+			                {% if accounts_l.parent_account == accounts_m.account_number %}
+			                  <td width="5%"></td>
+			                	    <td width="12%">{{accounts_l.account_number}}</td>
+			                	    <td width="14%">{{accounts_l.account_name}} </td>
+			                	    <td width="19%"> {{accounts_l.account_desc}}</td>
+			                	    <td width="14%">{{accounts_l.status}}</td>
+			                	    <td width="18%">{{accounts_l.account_start_date}}</td>
+			                	    <td width="13%">{{accounts_l.account_level}}</td>
+			                	    <td></td>
+			                	    {% endif %}
+			                 </tr>
+			             	
+			               </table>
+			             </a></h2>
+			             
+			             {% endfor %}
+			             </div>
+			             {% endfor %}
+			             </div>
+			             
+			             
+			              
+              </div>
+              {% endfor %}
+              
+            
+              <div class="toggle_container">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+              {% for accounts_l in account_list_low %}
+              
+              {
+                <tr if({{accounts_l.parent_account}}=={{accounts_m.account_number}})>
+                	    <td>{{accounts_l.account_number}}</td>
+                	    <td>{{accounts_l.account_name}} </td>
+                	    <td> {{accounts_l.account_desc}}</td>
+                	    <td>{{accounts_l.account_status}}</td>
+                	    <td>{{accounts_l.account_start_date}}</td>
+                	    <td>{{accounts_l.account_level}}</td>
+                	    <td></td>
+                </tr>
+              }
+             	
+              
+              {% endfor %}
+              </table>
+              
+            </div>
+            </div>
+            </div>
+            
+             
+          <!--<table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+                	  <tr>
+                	    <th width="3%">&nbsp;</th>
+                	    <th width="14%">Account Number </th>
+                	    <th width="14%">Account Name</th>
+                	    <th width="19%">Account Description </th>
+                	    <th width="14%">Account Status</th>
+                	    <th width="18%">Account Start Date</th>
+                	    <th width="13%">Account Manager</th>
+                	    <th width="5%">&nbsp;</th>
+              	    </tr>
+                	  <tr>
+                         <td></td>
+                	    <td>1100</td>
+                	    <td>Salary </td>
+                	    <td> Lorem ipusm</td>
+                	    <td>Active</td>
+                	    <td>10-Jan-06</td>
+                	    <td>John Smith</td>
+                	    <td></td>
+                	    
+              	    </tr>
+                     <tr>
+                         <td></td>
+                	    <td>1100</td>
+                	    <td>Salary </td>
+                	    <td> Lorem ipusm</td>
+                	    <td>Active</td>
+                	    <td>10-Jan-06</td>
+                	    <td>John Smith</td>
+                	    <td><a href="#">Edit</a></td>
+                	    
+              	    </tr>
+                     <tr>
+                         <td></td>
+                	    <td>1100</td>
+                	    <td>Salary </td>
+                	    <td> Lorem ipusm</td>
+                	    <td>Active</td>
+                	    <td>10-Jan-06</td>
+                	    <td>John Smith</td>
+                	    <td></td>
+                	    
+              	    </tr>
+                     <tr>
+                         <td></td>
+                	    <td>1100</td>
+                	    <td>Salary </td>
+                	    <td> Lorem ipusm</td>
+                	    <td>Active</td>
+                	    <td>10-Jan-06</td>
+                	    <td>John Smith</td>
+                	    <td><a href="#">Edit</a></td>
+                	    
+              	    </tr>
+                     <tr>
+                         <td></td>
+                	    <td>1100</td>
+                	    <td>Salary </td>
+                	    <td> Lorem ipusm</td>
+                	    <td>Active</td>
+                	    <td>10-Jan-06</td>
+                	    <td>John Smith</td>
+                	    <td></td>
+                	    
+              	    </tr>
+                     <tr>
+                         <td></td>
+                	    <td>1100</td>
+                	    <td>Salary </td>
+                	    <td> Lorem ipusm</td>
+                	    <td>Active</td>
+                	    <td>10-Jan-06</td>
+                	    <td>John Smith</td>
+                	    <td><a href="#">Edit</a></td>
+                	    
+              	    </tr>
+                     <tr>
+                         <td></td>
+                	    <td>1100</td>
+                	    <td>Salary </td>
+                	    <td> Lorem ipusm</td>
+                	    <td>Active</td>
+                	    <td>10-Jan-06</td>
+                	    <td>John Smith</td>
+                	    <td></td>
+                	    
+              	    </tr>
+              	  </table>--> 
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer">© Copyright 2013 deducive.com. All Rights Reserved</div>
+</div>
+</body>
+</html>

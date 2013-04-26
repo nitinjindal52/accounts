@@ -1,0 +1,89 @@
+@charset "utf-8";
+/* CSS Document */
+@font-face {
+    font-family: 'BebasNeueRegular';
+    src: url('fonts/BebasNeue-webfont.eot');
+    src: url('fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/BebasNeue-webfont.woff') format('woff'),
+         url('fonts/BebasNeue-webfont.ttf') format('truetype'),
+         url('fonts/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+body{ margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; background:url(../images/background.jpg)}
+a{ text-decoration:none}
+
+#wrapper{ width:100%; float:left}
+#header-wrapper{ width:100%; float:left; background:#ffffff; border-top:5px solid #333333; min-height:96px}
+.browser-center{ width:990px; margin:0 auto}
+#logo{ width:auto; float:left; margin-top:10px;}
+#header-right{ width:auto; float:right; margin-top: 28px;}
+#welcome-user{ width:auto; float:left;}
+#welcome-user h1{ font-size:15px; color:#717171; margin:0; padding:0; font-weight:normal}
+#welcome-user h1 span{ color:#c10000}
+#welcome-user p{ font-size:13px; text-align:right; color:#a1a1a1; margin:0; padding:0; line-height:20px}
+
+.button{ width:auto; float:left; background:url(../images/button-bg.jpg) repeat-x; height:37px; line-height:37px; color:#ffffff; padding:0 20px; font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif; font-size:24px; -moz-border-radius: 5px;     -webkit-border-radius: 5px;    -khtml-border-radius: 5px;    border-radius: 5px;}
+
+#logout{ width:auto; float:left; margin-left:20px;}
+
+#main-content-wrapper{ width:100%; float:left}
+
+#center-content-wrapper{ width:990px; float:left}
+#page-title{ width:990px; float:left; margin:20px 0; border-bottom:1px solid #ced0d3; padding-bottom:20px;} 
+#page-title h1{font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;  font-size:30px; color:#333333; margin:0; padding:0; font-weight:normal}
+#page-title p{font-size:17px; color:#333333; margin:0; padding:0; line-height:20px}
+
+#form-wrapper{ width:auto; float:left; margin:30px 0}
+.form-area{ width:580px; float:left; margin-bottom:8px;}
+.form-label{ width:250px; float:left; text-align:right; font-size:14px; text-transform:uppercase; color:#3a3737; line-height:30px;}
+.form-field{ width:320px; float:right}
+.text-box { background-clip: padding-box; background-color: #FFFFFF; border: 1px solid #969699; box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2) inset; -moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2) inset; -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2) inset;  font-family:Arial, Helvetica, sans-serif, "Century Gothic"; font-size: 12px;  -moz-border-radius:3px; border-radius: 3px 3px 3px 3px; -webkit-border-radius:3px; -o-border-radius:3px; width:310px; height:30px; line-height:30px; padding:0 5px}
+.text-box:focus{ background-color:#ffffcc}
+
+.text-area { background-clip: padding-box; background-color: #FFFFFF; border: 1px solid #969699; box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2) inset; -moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2) inset; -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2) inset;  font-family:Arial, Helvetica, sans-serif, "Century Gothic"; font-size: 12px;  -moz-border-radius:3px; border-radius: 3px 3px 3px 3px; -webkit-border-radius:3px; -o-border-radius:3px; width:310px; height:150px; padding:0 5px}
+.text-area:focus{ background-color:#ffffcc}
+
+.content{ width:990px; float:left}
+
+
+#box-table-a
+{
+	
+	font-size: 14px;
+	
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+}
+#box-table-a th
+{
+	font-size: 13px;
+	font-weight: normal;
+	padding: 8px;
+	background: #ab0303;
+	border-top: 4px solid #890303;
+	border-bottom: 1px solid #fff;
+	color: #ffffff;
+}
+#box-table-a td
+{
+	padding: 8px;
+	background: #6b6b6b; 
+	border-bottom: 1px solid #fff;
+	color: #ffffff;
+	border-top: 1px solid transparent;
+}
+#box-table-a tr:hover td
+{
+	background: #ffffff;
+	color: #000000;
+}
+
+#box-table-a td a{ background:#fff; color:#000; padding:2px 8px;  -moz-border-radius:3px; border-radius: 3px 3px 3px 3px; -webkit-border-radius:3px; -o-border-radius:3px;}
+#box-table-a tr:hover td a{background:#e4e4e4; color:#000; padding:2px 8px}
+
+#footer{ width:100%; float:left; background:#333333; text-align:center; font-size:12px; color:#918f8f; height:40px; line-height:40px; margin-top:20px;}

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href="{{STATIC_URL}}css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div id="wrapper">
+	<div id="header-wrapper">
+    	<div class="browser-center">
+        	<div id="logo"><a href="#"><img src="{{STATIC_URL}}images/logo.jpg" alt="logo" /></a></div>
+            <div id="header-right">
+            	<div id="welcome-user">
+                	<h1><span>Welcome</span> Sumeet Mahapatra</h1>
+                    <p>Last Login: 22-01-2013</p>
+                </div>
+                <div id="logout"><a href="#" class="button">logout</a></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="main-content-wrapper">
+    	<div class="browser-center">
+        	<div id="center-content-wrapper">
+            	<div id="page-title">
+                	<h1>Manage Account</h1>
+                    <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...	</p>
+                </div>
+                
+                <div class="content">
+               	  <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-a">
+                	  <tr>
+                	    <th width="3%">&nbsp;</th>
+                	    <th width="14%">Account Number </th>
+                	    <th width="14%">Account Name</th>
+                	    <th width="19%">Account Description </th>
+                	    <th width="14%">Account Status</th>
+                	    <th width="18%">Account Start Date</th>
+                	    <th width="13%">Account Level</th>
+                	    <th width="5%">&nbsp;</th>
+              	    </tr>
+                	{% for accounts in account_list %}
+                	  <tr>
+                         <td></td>
+                	    <td>{{accounts.account_number}}</td>
+                	    <td>{{accounts.account_name}} </td>
+                	    <td> {{accounts.account_desc}}</td>
+                	    <td>{{accounts.account_status}}</td>
+                	    <td>{{accounts.account_start_date}}</td>
+                	    <td>{{accounts.account_level}}</td>
+                	    <td></td>
+                	    
+              	    </tr>
+              	    {% endfor %}
+                   </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div id="footer">© Copyright 2013 deducive.com. All Rights Reserved</div>
+</div>
+</body>
+</html>

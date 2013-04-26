@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href="{{STATIC_URL}}css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.js"></script>
+<script language="javascript" type="text/javascript">
+	function popitup(url) {
+		newwindow=window.open(url,'name','height=700,width=1200');
+		if (window.focus) {newwindow.focus()}
+		return false;
+	}
+</script>
+
+<script>
+	function ss(){
+	var x = parseFloat(document.getElementById('mul').value);
+		{% for bud in budget %}
+		try{
+			var txt_id = parseFloat(document.getElementById({{bud.id}}).value);
+			var y = parseInt({{bud.amount}}*x) ;
+			document.getElementById('{{bud.id}}').value = y;
+		}
+		catch(err)
+		{
+		}
+		{% endfor %}
+	}
+	</script>
+<script>
+	function check()
+	{
+		var x = document.getElementById('mul').value;
+		if ( x != '1')
+		{
+			alert("Set Figures to 100%.")
+			return false;
+		}
+		else{
+		return true;
+		}
+	}
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".toggle_container").hide();
+	$("h2.expand_heading").toggle(function(){
+		$(this).addClass("active"); 
+		}, function () {
+		$(this).removeClass("active");
+	});
+	$("h2.expand_heading").click(function(){
+		$(this).next(".toggle_container").slideToggle("slow");
+	});
+	$(".expand_all").toggle(function(){
+		$(this).addClass("expanded"); 
+		}, function () {
+		$(this).removeClass("expanded");
+	});
+	$(".expand_all").click(function(){
+		$(".toggle_container").slideToggle("slow");
+	});
+});
+</script>
+<script>
+	function tar1(cell)
+	{
+		if(document.getElementById(cell).value == "" )
+		{
+			document.getElementById(cell).value = 0 ;
+		}
+		{% for bud in budget %}
+			{% if bud.account.account_level == "Medium" %}
+				var x = 0;
+				{% for bud1 in budget %}
+					{% if bud1.account.account_level == "Low" %}
+						{% if bud1.account.parent_account == bud.account.account_number %}
+							{% if bud1.accounting_period.month == bud.accounting_period.month %}
+							try
+							{
+								var y = parseInt(document.getElementById('{{bud1.id}}').value);
+								x=x+y;
+							}
+							catch(err)
+							{
+							
+							}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+				try{
+				
+					document.getElementById('{{bud.id}}').value=x;
+					}
+					catch(err)
+					{
+					}
+			{% endif %}
+		{% endfor %}
+		{% for bud in budget %}
+			{% if bud.account.account_level == "High" %}
+				var x = 0;
+				{% for bud1 in budget %}
+					{% if bud1.account.account_level == "Medium" %}
+						{% if bud1.account.parent_account == bud.account.account_number %}
+							{% if bud1.accounting_period.month == bud.accounting_period.month %}
+							try{
+							var y = parseInt(document.getElementById('{{bud1.id}}').value);
+							x=x+y;
+							}
+							catch(err)
+							{
+							}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+				try{
+				document.getElementById('{{bud.id}}').value=x;
+				}
+				catch(err)
+				{
+				}
+			{% endif %}
+		{% endfor %}
+	}
+</script>
+<script>
+	function tar(cell)
+	{
+		{% for bud in budget %}
+			var t = cell
+			var i = {{bud.id}}
+			if ( t == i){
+					{% if bud.account.account_level == "Low" %}
+						{% for bud1 in budget %}
+							{% if bud1.account.account_level == "Medium" %}
+								{% if bud1.account.account_number == bud.account.parent_account %}
+									{% if bud1.accounting_period.month == bud.accounting_period.month %}
+									var q = {{bud.amount}};
+									var w = {{bud1.amount}};
+									var e = parseInt(document.getElementById('{{bud.id}}').value);
+									var r = w-q+e;
+									document.getElementById('{{bud1.id}}').value = r;
+									{% endif %}
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+					}	
+				else
+				{
+				}
+		{% endfor %}
+	}
+</script>
+    <SCRIPT language=Javascript>
+       
+       function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : event.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+       }
+       
+    </SCRIPT>
+<body>
+<div id="wrapper">
+	<div id="header-wrapper">
+    	<div class="browser-center">
+        	<div id="logo"><a href="#"><img src="{{STATIC_URL}}images/logo.jpg" alt="logo" /></a></div>
+            <div id="header-right">
+            	<div id="welcome-user">
+                	<h1><span>Welcome</span> Sumeet Mahapatra</h1>
+                    <p>Last Login: 22-01-2013</p>
+                </div>
+                <div id="logout"><a href="#" class="button">logout</a></div>
+            </div>
+        </div>
+    </div>
+    <div id="main-content-wrapper">
+    	<div class="browser-center">
+        	<div id="center-content-wrapper">
+            	<div id="page-title">
+                	<h1>Budget</h1>
+                    <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...	</p>
+                </div>
+                 <form method="post" name="account" action="." >{%csrf_token%}  
+                <div id="form-wrapper" >
+                	<div class="form-area" >
+                    	<div class="form-label" style="width:150px;text-align:left;" >Account Number</div>
+                           <div class="form-field" style="float:left;">
+                          <input list="parent_account" value="{{selected_account.account_number}}" onkeypress="return isNumberKey(event)" name="account_number" id="parent-account-number" class="text-box" maxlength="4">
+                          	<datalist id="parent_account">
+                          	<option></option>
+                          	{%for parent_accounts in account %}
+                          	<option value="{{ parent_accounts.account_number }}">{{ parent_accounts.account_number }}-{{parent_accounts.account_name}}({{parent_accounts.account_level}})</option>
+                          	{% endfor %}
+                          	</datalist>
+                          
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label" style="width:150px; text-align:left;">Period</div>
+                           <div class="form-field" style="float:left;" >
+                          <input list="account_period" onkeypress="return isNumberKey(event)" value="{{year_f}}" name="account_period" class="text-box" maxlength="4">
+                          	<datalist id="account_period">
+                          	<option></option>
+                          	<option value="2010">2010</option>
+                          	<option value="2011">2011</option>
+                          	<option value="2012">2012</option>
+                          	<option value="2013">2013</option>
+                          	</datalist>
+                          
+                        </div>
+                    </div>
+ 					<div class="form-area">
+                    	<div class="form-label" style="width:150px; text-align:left;">Past Data Option</div>
+                        <div class="form-field" style="float:left;">
+                          <select class="emp-select" name="p_d_o">
+                          	<option value="1">Budget</option>
+                          	<option value="2" selected>Actuals</option>
+                          	
+                          </select>
+                        </div>
+                    </div>
+                     <div class="form-area">
+                    
+							<div class="form-label" style="width:150px; text-align:left;">Figures:</div>
+							<div class="form-field" style="float:left;">
+								<select class="emp-select" name="mul_fact" id="mul" onchange="return ss()" >
+									<option value="1">100%</option>
+									<option value=".1">10%</option>
+									<option value=".01">1%</option>
+									<option value=".001">.1%</option>
+									<option value=".0001">.01%</option>
+									<option value=".00001">.001%</option>
+								</select>
+							</div>
+                    	</div>
+                    
+                    
+                    
+                     <div class="form-area">
+                    	<div class="form-label"></div>
+                        <div class="form-field" style="float:left;">
+                          <input type="submit" name="go" class="button" value="Go" />
+                        </div>
+                    </div>
+                    
+                    <div class="grid-view-area">
+			            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-b">
+			              <tr>
+			                <th width="4%">&nbsp;</th>
+			                <th width="10%">Account</th>
+			                <th width="7%">Jan{{year}}</th>
+			                <th width="7%">Feb{{year}}</th>
+			                <th width="7%">Mar{{year}}</th>
+			                <th width="7%">Apr{{year}}</th>
+			                <th width="7%">May{{year}}</th>
+			                <th width="7%">Jun{{year}}</th>
+			                <th width="7%">Jul{{year}}</th>
+			                <th width="7%">Aug{{year}}</th>
+			                <th width="7%">Sep{{year}}</th>
+			                <th width="7%">Oct{{year}}</th>
+			                <th width="7%">Nov{{year}}</th>
+			                <th width="7%">Dec{{year}}</th>
+			                <th width="2%">&nbsp;</th>
+			              </tr>
+			            </table>
+			        </div>
+			        <div class="expand_wrapper">
+          	            <h2 class="expand_heading"><a href="#">
+				              <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-b">
+				                	  <tr>
+				                        <td width="4%"></td>
+				                        <td width="10%" style="text-align:left;">{{selected_account.account_number}}-{{selected_account.account_name}}</td>
+				                        {% for x in range %}
+					                        <td width="7%">
+					                        {% for bud in budget %}
+					                        	{% if bud.account == selected_account %}
+							                        {% if bud.accounting_period.month == x %}
+								                        {% if bud.accounting_period.year > current_year %}
+						                        			<input class="cell-a" readonly="true" value="{{bud.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+					                        			{% elif bud.accounting_period.year < current_year %}
+						                        			 	{% for act in actuals %}
+									                        		{% if act.account == selected_account %}
+										                        		{% if act.accounting_period.month == x %}
+										                        			<input class="cell-a" readonly="true" value="{{act.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+					                        							{% endif %}
+									                        		{% endif %}
+									                        	{% endfor %}
+							                        	{% elif bud.accounting_period.year == current_year %}
+								                        		{% if bud.accounting_period.month > current_month%}
+								                        	<input class="cell-a" readonly="true" value="{{bud.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+					                        					{% else %}
+								                        			{% for act in actuals %}
+										                        		{% if act.account == selected_account %}
+											                        		{% if act.accounting_period.month == x %}
+											                        			<input class="cell-a" readonly="true" value="{{act.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+											                        		{% endif %}
+										                        		{% endif %}
+										                        	{% endfor %}
+					                        					{% endif %}
+					                                 {% endif %}
+					                        	{% endif %}
+					                        	{% endif %}
+					                        	{% endfor %}
+					                       	</td>
+				                        {% endfor %}
+				                          <td width="2%">&nbsp;</td>
+				                      </tr>
+				                      
+				              	 </table>
+				              </a></h2>
+				              <div class="toggle_container">
+				              {% for med_acc in medium_accounts %}
+				           		<h2 class="expand_heading"><a href="#">
+					              <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-b">
+					                <tr>
+			                  			<td width="4%"></td>
+			                  			<td width="10%" style="text-align:left;">{{med_acc.account_number}}-{{med_acc.account_name}}</td>
+			                  			{% for x in range %}
+			                  			<td width="7%"> {% for bud in budget %}
+					                        	{% if bud.account == med_acc %}
+							                        {% if bud.accounting_period.month == x %}
+								                        {% if bud.accounting_period.year > current_year %}
+						                        			<input class="cell-a" readonly="true" value="{{bud.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+					                        			{% elif bud.accounting_period.year < current_year %}
+						                        			 	{% for act in actuals %}
+									                        		{% if act.account == med_acc %}
+										                        		{% if act.accounting_period.month == x %}
+										                        		<input class="cell-a" readonly="true" value="{{act.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+										                        		{% endif %}
+									                        		{% endif %}
+									                        	{% endfor %}
+							                        	{% elif bud.accounting_period.year == current_year %}
+								                        		{% if bud.accounting_period.month > current_month%}
+								                        	<input class="cell-a" readonly="true" value="{{bud.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+					                        					{% else %}
+								                        			{% for act in actuals %}
+										                        		{% if act.account == med_acc %}
+											                        		{% if act.accounting_period.month == x %}
+											                        			<input class="cell-a" readonly="true" value="{{act.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+											                        		{% endif %}
+										                        		{% endif %}
+										                        	{% endfor %}
+					                        					{% endif %}
+					                                 {% endif %}
+					                        	{% endif %}
+					                        	{% endif %}
+					                        	{% endfor %}
+					                        	</td>
+				                        	{% endfor %}
+			                  			<td width="2%"></td>
+			                  		</tr>
+			                  	</table>
+			                  	</a></h2>
+			                  	<div class="toggle_container">
+				              
+				           		  {% for low_acc in low_accounts %}
+				              	{% if low_acc.parent_account == med_acc.account_number%}
+				           		  <table width="100%" border="0" cellspacing="0" cellpadding="0" id="box-table-b">
+					                {% if low_acc.account_number in list_low_parent_acc %}
+					                <tr onclick="return popitup('/tuples/budget1_actual_low_acc/{{low_acc.account_number}}/{{year_f}}/');">
+			                  			<td width="5%"></td>
+			                  			<td width="9%">{{low_acc.account_number}}-{{low_acc.account_name}}</td>
+			                  			{% for x in range %}
+			                  			<td width="7%">
+			                  				{% for bud in budget %}
+					                        	{% if bud.account == low_acc %}
+							                        {% if bud.accounting_period.month == x %}
+								                        {% if bud.accounting_period.year > current_year %}
+						                        			<input class="cell-a" readonly="true" value="{{bud.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+					                        			{% elif bud.accounting_period.year < current_year %}
+						                        			 	{% for act in actuals %}
+									                        		{% if act.account == low_acc %}
+										                        		{% if act.accounting_period.month == x %}
+										                        		<input class="cell-a" readonly="true" value="{{act.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+										                        		{% endif %}
+									                        		{% endif %}
+									                        	{% endfor %}
+							                        	{% elif bud.accounting_period.year == current_year %}
+								                        		{% if bud.accounting_period.month > current_month%}
+								                        	<input class="cell-a" readonly="true" value="{{bud.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+					                        					{% else %}
+								                        			{% for act in actuals %}
+										                        		{% if act.account == low_acc %}
+											                        		{% if act.accounting_period.month == x %}
+											                        			<input class="cell-a" readonly="true" value="{{act.amount}}" id="{{bud.id}}" name="{{bud.id}}"/>
+											                        		{% endif %}
+										                        		{% endif %}
+										                        	{% endfor %}
+					                        					{% endif %}
+					                                 {% endif %}
+					                        	{% endif %}
+					                        	{% endif %}
+					                        	
+				                        	{% endfor %}
+			                  			</td>
+			                  			{% endfor %}
+			                  			<td width="2%"></td>
+			                  			
+			                  		</tr>
+			                  		{% else %}
+			                  			<tr>
+			                  				<td width="5%"></td>
+			                  				<td width="9%">{{low_acc.account_number}}-{{low_acc.account_name}}</td>
+			                  				{% for x in range %}
+			                  				<td width="7%">
+					                        	{% for bud in budget %}
+					                        	{% if bud.account == low_acc %}
+							                        {% if bud.accounting_period.month == x %}
+								                        {% if bud.accounting_period.year > current_year %}
+						                        			<input type="text" name="{{bud.id}}" value="{{bud.amount}}" onchange="return tar1({{bud.id}})" id="{{bud.id}}" class="cell" />
+					                        			{% elif bud.accounting_period.year < current_year %}
+						                        			 	{% for act in actuals %}
+									                        		{% if act.account == low_acc %}
+										                        		{% if act.accounting_period.month == x %}
+										                        		<input class="cell-a" readonly="true" value="{{act.amount}}" id="{{bud.id}}" />
+										                        		{% endif %}
+									                        		{% endif %}
+									                        	{% endfor %}
+							                        	{% elif bud.accounting_period.year == current_year %}
+								                        		{% if bud.accounting_period.month > current_month%}
+								                        	<input type="text" name="{{bud.id}}" value="{{bud.amount}}" onchange="return tar1({{bud.id}})" id="{{bud.id}}" class="cell" />
+					                        					{% else %}
+								                        			{% for act in actuals %}
+										                        		{% if act.account == low_acc %}
+											                        		{% if act.accounting_period.month == x %}
+											                        			<input class="cell-a" readonly="true" value="{{act.amount}}" id="{{bud.id}}" />
+											                        		{% endif %}
+										                        		{% endif %}
+										                        	{% endfor %}
+					                        					{% endif %}
+					                                 {% endif %}
+					                        	{% endif %}
+					                        	{% endif %}
+					                        	
+				                        	{% endfor %}
+				                        	</td>
+			                  				{% endfor %}
+			                  				<td width="2%"></td>
+			                  			</tr>
+			                  		{% endif %}
+			                  		</table>
+			                  		{% endif %}
+			                  		
+			                  		{% endfor %}
+			                  	
+			                  	</div>
+			                  	{% endfor %}
+			                  	</div>
+			                  	      
+			  		</div>
+			  		
+              	
+              	
+              	
+              	 </div>
+              	 		<div style="float:left;">
+                          <button name="save" class="button" onclick="return check()">Savee</button>
+                        </div>
+             
+               </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="footer">© Copyright 2013 deducive.com. All Rights Reserved</div>
+</div>
+</body>
+</html>

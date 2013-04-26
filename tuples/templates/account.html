@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Create Account</title>
+<link href="{{STATIC_URL}}css/style.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.8.2.min.js" ></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/validatejs.js" ></script>		
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}style/jquery-ui.css" />
+		<script src="{{ STATIC_URL }}js/jquery-1.8.3.js"></script>
+		<script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+		<link rel="stylesheet" href="/resources/demos/style.css" />
+		<script>
+			$(function() {
+			$( ".datepicker" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			yearRange: "1990:2099",
+			maxDate: new Date(),
+			dateFormat: 'yy-mm-dd'
+			});
+			});
+		</script>
+		<script LANGUAGE="JavaScript">
+				function send_level() {
+								
+							var level = document.getElementById('account-level').value;
+							if (level == 'High'){
+									document.getElementById('parent-account-number').readOnly = true;
+											
+											element = document.getElementById('parent-account-number');
+											element.value="";
+											
+											
+							}
+							else{
+									var parent_account_number=document.getElementById('parent-account-number');
+									parent_account_number.readOnly = false;
+									parent_account_number.setAttribute('list',level+'_account_level');
+								}
+							}
+		</script>
+		<script LANGUAGE="JavaScript">
+		function checkaccountnumber() {
+		if (document.forms.account.accountnumber.value.length < 4) {
+							alert('account number should be 4 characters long');
+								return false;
+								}}
+		</script>
+		<script LANGUAGE="JavaScript">
+				function checkparrentaccount() {
+							 
+							var level = document.getElementById('account-level').value;
+							if (level == 'Medium'){	
+							
+							var pac = document.getElementById('parent-account-number').value;
+							{%for parent_accounts in parent_account_high %};
+							var parentaccount = {{parent_accounts.account_number}};
+								if (pac==parentaccount)
+								{
+									return true;								
+								}
+							{% endfor %};
+							}
+							if (level == 'Low'){	
+							var pac = document.getElementById('parent-account-number').value;
+							{%for parent_accounts in parent_account_medium %};
+							var parentaccount = {{parent_accounts.account_number}};
+								if (pac==parentaccount)
+								{
+									
+									return true;								
+								}
+							{% endfor %};
+							}
+							$("#parent-account-number").val("");
+							
+							alert("parent account not matched")
+							return false;
+							}
+							if (document.forms.account.accountnumber.value.length < 4) {
+							alert('account number should be 4 characters long');
+								return false;
+								}
+							}
+		</script>
+	
+    <SCRIPT language=Javascript>
+       
+       function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : event.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+       }
+       
+    </SCRIPT>
+
+</head>
+
+<body>
+<div id="wrapper">
+	<div id="header-wrapper">
+    	<div class="browser-center">
+        	<div id="logo"><a href="#"><img src="{{STATIC_URL}}images/logo.jpg" alt="logo" /></a></div>
+            <div id="header-right">
+            	<div id="welcome-user">
+                	<h1><span>Welcome</span> Sumeet Mahapatra</h1>
+                    <p>Last Login: 22-01-2013</p>
+                </div>
+                <div id="logout"><a href="#" class="button">logout</a></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="main-content-wrapper">
+    	<div class="browser-center">
+        	<div id="center-content-wrapper">
+            	<div id="page-title">
+                	<h1>Create Account</h1>
+                    <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...	</p>
+                </div>
+                <form method="post" name="account" action="." onsubmit="return checkparrentaccount()" >{%csrf_token%}
+                <div id="form-wrapper">
+                	<div class="form-area">
+                    	<div class="form-label">Account Level</div>
+                        <div class="form-field">
+                          <select id="account-level" class="emp-select" name="account_level" onChange=send_level() />
+                          																
+                          																<option value="High">High</option>
+                          																<option value="Medium">Mediun</option>
+                          																<option value="Low">Low</option>
+                          								      													
+                          																
+                          																
+                          																</select>
+                        </div>
+                    </div>
+                	<div class="form-area">
+                    	<div class="form-label">Account Type</div>
+                        <div class="form-field">
+                          <select name="account_type" id="textfield" class="emp-select" /><option {{form.account_type}}</option></select>
+                        </div>
+                    </div>
+                	<div class="form-area">
+                    	<div class="form-label">Account Number</div>
+                        <div class="form-field">
+                          <input type="text" name="account_number" onkeypress="return isNumberKey(event)" id="accountnumber" class="text-box" maxlength="5" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Account Name</div>
+                        <div class="form-field">
+                          <input type="text" name="account_name" id="textfield" class="text-box" maxlength="30" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Parent Account Number</div>
+                        <div class="form-field">
+                        
+                          <input list="Medium_account_level" autocomplete="false" readonly="True" onkeypress="return isNumberKey(event)" name="parent_account" id="parent-account-number" class="text-box" maxlength="5">
+                          	<datalist id="Medium_account_level">
+                         	 	{%for parent_accounts in parent_account_high %}
+                         	 		<option value="{{ parent_accounts.account_number }}">{{ parent_accounts.account_number }}-{{parent_accounts.account_name}}</option>
+                         	 	{% endfor %}	
+                         	</datalist>
+                         	<datalist id="Low_account_level">
+                         		{%for parent_accounts in parent_account_medium %}
+                         	 		<option value="{{ parent_accounts.account_number }}">{{ parent_accounts.account_number }}-{{parent_accounts.account_name}}</option>
+                         	 	{% endfor %}
+                         	</datalist>
+                          	
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Start Date</div>
+                        <div class="form-field">
+                          <input type="text" name="account_start_date" class="datepicker" readonly="True" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">End Date</div>
+                        <div class="form-field">
+                          <input type="text" name="account_end_date" class="datepicker" readonly="True" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Account Status</div>
+                        <div class="form-field">
+                          <select name="status" id="textfield" class="emp-select" ><option {{form.status}}</option></select>
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">GL acct:</div>
+                        <div class="form-field">
+                          <input type="text" name="gl_acct" class="text-box" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Product</div>
+                        <div class="form-field">
+                          <select name="product" id="textfield" class="emp-select" /><option {{form.product}}</option></select>
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Project</div>
+                        <div class="form-field">
+                          <select name="project" id="textfield" class="emp-select" /><option {{form.project}}</option></select>
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Cost Centre</div>
+                        <div class="form-field">
+                          <select name="cost-centre" id="textfield" class="emp-select" /><option {{form.cost_centre}}</option></select>
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Company:</div>
+                        <div class="form-field">
+                          <input type="text" name="company" class="text-box" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Department:</div>
+                        <div class="form-field">
+                          <input type="text" name="department" class="text-box" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Created Date</div>
+                        <div class="form-field">
+                          <input type="text" name="created_date" class="datepicker" readonly="True" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Update Date</div>
+                        <div class="form-field">
+                          <input type="text" name="updated_date" class="datepicker" readonly="True" />
+                        </div>
+                    </div>
+                    <div class="form-area">
+                    	<div class="form-label">Account Description</div>
+                        <div class="form-field">
+                          <textarea name="account_desc" id="textarea" cols="45" rows="5" class="text-area"></textarea>
+                        </div>
+                    </div>
+                    
+                     <div class="form-area">
+                    	<div class="form-label"></div>
+                        <div class="form-field">
+                        
+                          <input type="submit" name="submit" class="button" value="Create Account" />
+                        </div>
+                    </div>
+                   
+                    
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="footer">© Copyright 2013 deducive.com. All Rights Reserved</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href="{{STATIC_URL}}css/style.css" rel="stylesheet" type="text/css" />
+    <SCRIPT language=Javascript>
+       
+       function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : event.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+       }
+       
+    </SCRIPT>
+    <script LANGUAGE="JavaScript">
+				function checkparrentaccount() {
+							 
+							var level = document.getElementById('account-level').value;
+								
+							var pac = document.getElementById('parent-account-number').value;
+							{%for parent_accounts in account %};
+							var parentaccount = {{parent_accounts.account_number}};
+								if (pac==parentaccount)
+								{
+									
+									return true;								
+								}
+							{% endfor %};
+							
+							$("#parent-account-number").val("");
+							
+							alert("Account not matched")
+							return false;
+							
+							if (document.forms.account.accountnumber.value.length < 4) {
+							alert('account number should be 4 characters long');
+								return false;
+								}
+							}
+		</script>
+</head>
+
+<body>
+<div id="wrapper">
+	<div id="header-wrapper">
+    	<div class="browser-center">
+        	<div id="logo"><a href="#"><img src="{{STATIC_URL}}images/logo.jpg" alt="logo" /></a></div>
+            <div id="header-right">
+            	<div id="welcome-user">
+                	<h1><span>Welcome</span> Sumeet Mahapatra</h1>
+                    <p>Last Login: 22-01-2013</p>
+                </div>
+                <div id="logout"><a href="#" class="button">logout</a></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="main-content-wrapper">
+    	<div class="browser-center">
+        	<div id="center-content-wrapper">
+            	<div id="page-title">
+                	<h1>Edit Account</h1>
+                    <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...	</p>
+                </div>
+             <form method="post" name="account" action="." onsubmit="return checkparrentaccount()" >{%csrf_token%}  
+                <div id="form-wrapper">
+                	<div class="form-area">
+                    	<div class="form-label">Account Number</div>
+                           <div class="form-field">
+                          <input list="parent_account" onkeypress="return isNumberKey(event)" name="parent_account_number" id="parent-account-number" class="text-box" maxlength="5">
+                          	<datalist id="parent_account">
+                          	<option></option>
+                          	{%for parent_accounts in account %}
+                          	<option value="{{ parent_accounts.account_number }}">{{ parent_accounts.account_number }}</option>
+                          	{% endfor %}
+                          	</datalist>
+                          
+                        </div>
+                    </div>
+ 
+                    
+                     <div class="form-area">
+                    	<div class="form-label"></div>
+                        <div class="form-field">
+                          <input type="submit" name="submit" class="button" value="Show Account" />
+                        </div>
+                    </div>
+                   
+                    
+                </div>
+               </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="footer">© Copyright 2013 deducive.com. All Rights Reserved</div>
+</div>
+</body>
+</html>
